@@ -20,12 +20,12 @@ class ObjectController {
         $error = '';
         //xử lý submit form
         if (isset($_POST['submit'])) {
-            $bd_name = $_POST['txt_name'];
-            $bd_sex = $_POST['txt_sex'];
-            $bd_age = $_POST['txt_age'];
-            $bd_bgroup = $_POST['txt_bgroup'];
-            $bd_reg_date = $_POST['txt_reg_date'];
-            $bd_phno = $_POST['txt_phno'];
+            $bd_name = $_POST['txt_tenduan'];
+            $bd_sex = $_POST['txt_namthuchien'];
+            $bd_age = $_POST['txt_linhvuc'];
+            $bd_bgroup = $_POST['txt_nhiemvu'];
+            $bd_reg_date = $_POST['txt_coquan'];
+            
             //xử lý validate, nếu mà để trống tên sách
 //            thì báo lỗi và không cho submit form
             if (empty($bd_name)) {
@@ -38,12 +38,11 @@ class ObjectController {
                 //nên tạo 1 mảng tạm để lưu thông tin của
 //                đối tượng dựa theo cấu trúc bảng
                 $objectArr = [
-                    'txt_name' => $bd_name,
-                    'txt_sex' => $bd_sex,
-                    'txt_age' => $bd_age,
-                    'txt_bgroup' => $bd_bgroup,
-                    'txt_reg_date' => $bd_reg_date,
-                    'txt_phno' => $bd_phno,
+                    'txt_tenduan' => $bd_name,
+                    'txt_namthuchien' => $bd_sex,
+                    'txt_linhvuc' => $bd_age,
+                    'txt_nhiemvu' => $bd_bgroup,
+                    'txt_coquan' => $bd_reg_date,
                 ];
                 $isInsert = $object->insert($objectArr);
                 if ($isInsert) {
@@ -64,17 +63,17 @@ class ObjectController {
     public function edit() {
         //lấy ra thông tin sách dựa theo id đã gắn trên url
         //xử lý validate cho trường hợp id truyền lên không hợp lệ
-        if (!isset($_GET['id'])) {
+        if (!isset($_GET['maduan'])) {
             $_SESSION['error'] = "Tham số không hợp lệ";
             header("Location: index.php?controller=object&action=index");
             return;
         }
-        if (!is_numeric($_GET['id'])) {
+        if (!is_numeric($_GET['maduan'])) {
             $_SESSION['error'] = "Id phải là số";
             header("Location: index.php?controller=object&action=index");
             return;
         }
-        $id = $_GET['id'];
+        $id = $_GET['maduan'];
         //gọi model để lấy ra đối tượng sách theo id
         $objectModel = new object_Model();
         $object = $objectModel->details($id);
@@ -82,12 +81,11 @@ class ObjectController {
         //xử lý submit form, lặp lại thao tác khi submit lúc thêm mới
         $error = '';
         if (isset($_POST['submit'])) {
-            $txt_name = $_POST['txt_name'];
-            $txt_sex = $_POST['txt_sex'];
-            $txt_age = $_POST['txt_age'];
-            $txt_bgroup = $_POST['txt_bgroup'];
-            $txt_reg_date = $_POST['txt_reg_date'];
-            $txt_phno = $_POST['txt_phno'];
+            $txt_name = $_POST['txt_tenduan'];
+            $txt_sex = $_POST['txt_namthuchien'];
+            $txt_age = $_POST['txt_linhvuc'];
+            $txt_bgroup = $_POST['txt_nhiemvu'];
+            $txt_reg_date = $_POST['txt_coquan'];
             //check validate dữ liệu
             if (empty($txt_name)) {
                 $error = "Name không được để trống";
@@ -96,13 +94,12 @@ class ObjectController {
                 //xử lý update dữ liệu vào hệ thống
                 $objectModel = new object_Model();
                 $objectArr = [
-                    'id' => $id,
-                    'txt_name' => $txt_name,
-                    'txt_sex' => $txt_sex,
-                    'txt_age' => $txt_age,
-                    'txt_bgroup' => $txt_bgroup,
-                    'txt_reg_date' => $txt_reg_date,
-                    'txt_phno' => $txt_phno
+                    'maduan' => $id,
+                    'txt_tenduan' => $txt_name,
+                    'txt_namthuchien' => $txt_sex,
+                    'txt_linhvuc' => $txt_age,
+                    'txt_nhiemvu' => $txt_bgroup,
+                    'txt_coquan' => $txt_reg_date,
                 ];
                 $isUpdate = $objectModel->update($objectArr);
                 if ($isUpdate) {
@@ -110,6 +107,7 @@ class ObjectController {
                 }
                 else {
                     $_SESSION['error'] = "Update bản ghi #$id thất bại";
+                    
                 }
                 header("Location: index.php?controller=object&action=index");
                 exit();
@@ -123,17 +121,17 @@ class ObjectController {
     public function details() {
         //lấy ra thông tin sách dựa theo id đã gắn trên url
         //xử lý validate cho trường hợp id truyền lên không hợp lệ
-        if (!isset($_GET['id'])) {
+        if (!isset($_GET['maduan'])) {
             $_SESSION['error'] = "Tham số không hợp lệ";
             header("Location: index.php?controller=object&action=index");
             return;
         }
-        if (!is_numeric($_GET['id'])) {
-            $_SESSION['error'] = "Id phải là số";
+        if (!is_numeric($_GET['maduan'])) {
+            $_SESSION['error'] = "Mã dự án phải là số";
             header("Location: index.php?controller=object&action=index");
             return;
         }
-        $id = $_GET['id'];
+        $id = $_GET['maduan'];
         //gọi model để lấy ra đối tượng sách theo id
         $objectModel = new object_Model();
         $object = $objectModel->details($id);
@@ -141,12 +139,11 @@ class ObjectController {
         //xử lý submit form, lặp lại thao tác khi submit lúc thêm mới
         $error = '';
         if (isset($_POST['submit'])) {
-            $txt_name = $_POST['txt_name'];
-            $txt_sex = $_POST['txt_sex'];
-            $txt_age = $_POST['txt_age'];
-            $txt_bgroup = $_POST['txt_bgroup'];
-            $txt_reg_date = $_POST['txt_reg_date'];
-            $txt_phno = $_POST['txt_phno'];
+            $txt_name = $_POST['txt_tenduan'];
+            $txt_sex = $_POST['txt_namthuchien'];
+            $txt_age = $_POST['txt_linhvuc'];
+            $txt_bgroup = $_POST['txt_nhiemvu'];
+            $txt_reg_date = $_POST['txt_coquan'];
             //check validate dữ liệu
             if (empty($txt_name)) {
                 $error = "Name không được để trống";
@@ -155,13 +152,12 @@ class ObjectController {
                 //xử lý update dữ liệu vào hệ thống
                 $objectModel = new object_Model();
                 $objectArr = [
-                    'id' => $id,
-                    'txt_name' => $txt_name,
-                    'txt_sex' => $txt_sex,
-                    'txt_age' => $txt_age,
-                    'txt_bgroup' => $txt_bgroup,
-                    'txt_reg_date' => $txt_reg_date,
-                    'txt_phno' => $txt_phno
+                    'maduan' => $id,
+                    'txt_tenduan' => $txt_name,
+                    'txt_namthuchien' => $txt_sex,
+                    'txt_linhvuc' => $txt_age,
+                    'txt_nhiemvu' => $txt_bgroup,
+                    'txt_coquan' => $txt_reg_date,
                 ];
                 $isUpdate = $objectModel->details($objectArr);
                 if ($isUpdate) {
@@ -184,7 +180,7 @@ class ObjectController {
         //url trên trình dueyjet sẽ có dạng
 //        ?controller=object&action=delete&id=1
         //bắt id từ trình duyêtj
-        $id = $_GET['id'];
+        $id = $_GET['maduan'];
         if (!is_numeric($id)) {
             // header("Location: index.php?controller=object&action=index");
             // exit();

@@ -15,8 +15,8 @@
     public function insert($param = []) {
         $connection = $this->connectDb();
         //tạo và thực thi truy vấn
-        $queryInsert = "INSERT INTO blood_donor(`bd_name`,`bd_sex`,`bd_age`,`bd_bgroup`,`bd_reg_date`,`bd_phno`) 
-        VALUES ('{$param['txt_name']}','{$param['txt_sex']}','{$param['txt_age']}','{$param['txt_bgroup']}','{$param['txt_reg_date']}','{$param['txt_phno']}')";
+        $queryInsert = "INSERT INTO duan(`tenduan`,`namthuchien`,`linhvuc`,`nhiemvu`,`coquanthuchien`) 
+        VALUES ('{$param['txt_tenduan']}','{$param['txt_namthuchien']}','{$param['txt_linhvuc']}','{$param['txt_nhiemvu']}','{$param['txt_coquan']}')";
         $isInsert = mysqli_query($connection, $queryInsert);
         $this->closeDb($connection);
         return $isInsert;
@@ -26,7 +26,7 @@
     // HIỂN THỊ CHI TIẾT BẢN GHI
     public function details($id = null) {
         $connection = $this->connectDb();
-        $querySelect = "SELECT * FROM blood_donor WHERE id = $id";
+        $querySelect = "SELECT * FROM duan WHERE maduan = $id";
         $results = mysqli_query($connection, $querySelect);
         $object = [];
         if (mysqli_num_rows($results) > 0) {
@@ -42,7 +42,7 @@
     public function index() {
         $connection = $this->connectDb();
         //truy vấn
-        $querySelect = "SELECT * FROM blood_donor";
+        $querySelect = "SELECT * FROM duan";
         $results = mysqli_query($connection, $querySelect);
         $objects = [];
         if (mysqli_num_rows($results) > 0) {
@@ -57,15 +57,14 @@
     {
 
         $connection = $this->connectDb();
-        $queryUpdate = "UPDATE blood_donor 
+        $queryUpdate = "UPDATE duan 
         SET 
-        `bd_name` = '{$object['txt_name']}',
-        `bd_sex` = '{$object['txt_sex']}', 
-        `bd_age` = '{$object['txt_age']}',
-        `bd_bgroup` = '{$object['txt_bgroup']}',
-        `bd_reg_date` = '{$object['txt_reg_date']}',
-        `bd_phno` = '{$object['txt_phno']}'
-        WHERE `id` = {$object['id']}";
+        `tenduan` = '{$object['txt_tenduan']}',
+        `namthuchien` = '{$object['txt_namthuchien']}', 
+        `linhvuc` = '{$object['txt_linhvuc']}',
+        `nhiemvu` = '{$object['txt_nhiemvu']}',
+        `coquanthuchien` = '{$object['txt_coquan']}'
+        WHERE `maduan` = {$object['maduan']}";
         $isUpdate = mysqli_query($connection, $queryUpdate);
         $this->closeDb($connection);
 
@@ -75,7 +74,7 @@
     public function delete($id = null) {
         $connection = $this->connectDb();
 
-        $queryDelete = "DELETE FROM blood_donor WHERE id = $id";
+        $queryDelete = "DELETE FROM duan WHERE maduan  = $id ";
         $isDelete = mysqli_query($connection, $queryDelete);
 
         $this->closeDb($connection);
@@ -88,6 +87,7 @@
             DB_USERNAME, DB_PASSWORD, DB_NAME);
         if (!$connection) {
             die("Không thể kết nối. Lỗi: " .mysqli_connect_error());
+            header("Location: error.php?controller=object&action=index");
         }
 
         return $connection;
